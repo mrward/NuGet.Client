@@ -12,9 +12,7 @@ using System.Threading.Tasks;
 using Moq;
 using NuGet.Common;
 using NuGet.Configuration;
-using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
-using NuGet.Protocol.Core.v3.Tests.Utility;
 using NuGet.Test.Server;
 using NuGet.Test.Utility;
 using Test.Utility;
@@ -29,82 +27,6 @@ namespace NuGet.Protocol.Core.v3.Tests
         /// </summary>
         private static readonly SemaphoreSlim HttpHandlerResourceV3Lock = new SemaphoreSlim(1);
         private const string FakeSource = "https://fake.server/users.json";
-
-        [Fact]
-        public async Task HttpSource_PromptsForCredentialsOn401()
-        {
-            // Arrange
-            using (await UsingSemaphore.WaitAsync(HttpHandlerResourceV3Lock))
-            using (var td = TestFileSystemUtility.CreateRandomTestFolder())
-            {
-                var tc = new TestContext(td);
-
-                tc.SetResponseSequence(new[]
-                {
-                    new HttpResponseMessage(HttpStatusCode.Unauthorized),
-                    new HttpResponseMessage(HttpStatusCode.OK),
-                });
-
-                var prompted = false;
-                HttpHandlerResourceV3.PromptForCredentialsAsync = (uri, type, message, token) =>
-                {
-                    prompted = true;
-                    return Task.FromResult(tc.Credentials);
-                };
-
-                // Act
-                var statusCode = await tc.HttpSource.ProcessResponseAsync(
-                    () => new HttpRequestMessage(),
-                    response =>
-                    {
-                        return Task.FromResult(response.StatusCode);
-                    },
-                    tc.Logger,
-                    CancellationToken.None);
-
-                // Assert
-                Assert.True(prompted, "The user should have been prompted for credentials.");
-                Assert.Equal(HttpStatusCode.OK, statusCode);
-            }
-        }
-
-        [Fact]
-        public async Task HttpSource_PromptsForCredentialsOn403()
-        {
-            // Arrange
-            using (await UsingSemaphore.WaitAsync(HttpHandlerResourceV3Lock))
-            using (var td = TestFileSystemUtility.CreateRandomTestFolder())
-            {
-                var tc = new TestContext(td);
-
-                tc.SetResponseSequence(new[]
-                {
-                    new HttpResponseMessage(HttpStatusCode.Forbidden),
-                    new HttpResponseMessage(HttpStatusCode.OK),
-                });
-
-                var prompted = false;
-                HttpHandlerResourceV3.PromptForCredentialsAsync = (uri, type, message, token) =>
-                {
-                    prompted = true;
-                    return Task.FromResult(tc.Credentials);
-                };
-
-                // Act
-                var statusCode = await tc.HttpSource.ProcessResponseAsync(
-                    () => new HttpRequestMessage(),
-                    response =>
-                    {
-                        return Task.FromResult(response.StatusCode);
-                    },
-                    tc.Logger,
-                    CancellationToken.None);
-
-                // Assert
-                Assert.True(prompted, "The user should have been prompted for credentials.");
-                Assert.Equal(HttpStatusCode.OK, statusCode);
-            }
-        }
 
         [Fact]
         public async Task HttpSource_GetNoContent()
@@ -150,7 +72,7 @@ namespace NuGet.Protocol.Core.v3.Tests
                 Assert.Equal(expected, actual);
             }
         }
-        
+
         [Fact]
         public async Task HttpSource_TimesOutDownload()
         {
@@ -171,9 +93,9 @@ namespace NuGet.Protocol.Core.v3.Tests
                     HttpCacheDirectory = td,
                     DownloadTimeout = TimeSpan.FromMilliseconds(expectedMilliseconds)
                 };
-            
+
                 // Act & Assert
-                var actual = await Assert.ThrowsAsync<IOException>(() => 
+                var actual = await Assert.ThrowsAsync<IOException>(() =>
                     server.ExecuteAsync(uri => httpSource.GetJObjectAsync(
                         new Uri(uri),
                         false,
@@ -185,7 +107,7 @@ namespace NuGet.Protocol.Core.v3.Tests
                     actual.Message);
             }
         }
-        
+
         [Fact]
         public async Task HttpSource_ValidatesValidNetworkContent()
         {

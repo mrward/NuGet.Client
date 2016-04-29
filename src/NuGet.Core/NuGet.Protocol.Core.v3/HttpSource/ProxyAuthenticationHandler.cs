@@ -8,14 +8,15 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using NuGet.Configuration;
+using Strings = NuGet.Protocol.Core.v3.Strings;
 
-namespace NuGet.Protocol.Core.v3
+namespace NuGet.Protocol
 {
     /// <summary>
     /// A message handler responsible for retrying request for authenticated proxies
     /// with missing credentials.
     /// </summary>
-    public class ProxyCredentialHandler : DelegatingHandler
+    public class ProxyAuthenticationHandler : DelegatingHandler
     {
         public static readonly int MaxAuthRetries = 3;
         private const string BasicAuthenticationType = "Basic";
@@ -29,7 +30,7 @@ namespace NuGet.Protocol.Core.v3
 
         private int _authRetries;
 
-        public ProxyCredentialHandler(
+        public ProxyAuthenticationHandler(
             HttpClientHandler clientHandler,
             ICredentialService credentialService,
             IProxyCredentialCache credentialCache)

@@ -11,17 +11,25 @@ if ((Split-Path -Path $PSScriptRoot -Leaf) -eq "scripts") {
     $NuGetClientRoot = Split-Path -Path $NuGetClientRoot -Parent
 }
 
-$MSBuildExe = Join-Path ${env:ProgramFiles(x86)} 'MSBuild\14.0\Bin\msbuild.exe'
-$NuGetExe = Join-Path $NuGetClientRoot '.nuget\nuget.exe'
-$ILMerge = Join-Path $NuGetClientRoot 'packages\ILMerge.2.14.1208\tools\ILMerge.exe'
-$XunitConsole = Join-Path $NuGetClientRoot 'packages\xunit.runner.console.2.1.0\tools\xunit.console.x86.exe'
 $CLIRoot = Join-Path $NuGetClientRoot 'cli'
-$DotNetExe = Join-Path $CLIRoot 'dotnet.exe'
 $Nupkgs = Join-Path $NuGetClientRoot nupkgs
 $Artifacts = Join-Path $NuGetClientRoot artifacts
 $Intermediate = Join-Path $Artifacts obj
+
 $NuGetCoreSln = Join-Path $NuGetClientRoot 'NuGet.Core.sln'
 $NuGetClientSln = Join-Path $NuGetClientRoot 'NuGet.Client.sln'
+
+$DotNetExe = Join-Path $CLIRoot 'dotnet.exe'
+$MSBuildExe = Join-Path ${env:ProgramFiles(x86)} 'MSBuild\14.0\Bin\msbuild.exe'
+$NuGetExe = Join-Path $NuGetClientRoot '.nuget\nuget.exe'
+$XunitConsole = Join-Path $NuGetClientRoot 'packages\xunit.runner.console.2.1.0\tools\xunit.console.x86.exe'
+$ILMerge = Join-Path $NuGetClientRoot 'packages\ILMerge.2.14.1208\tools\ILMerge.exe'
+
+Set-Alias dotnet $DotNetExe
+Set-Alias msbuild $MSBuildExe
+Set-Alias nuget $NuGetExe
+Set-Alias xunit $XunitConsole
+Set-Alias ilmerge $ILMerge
 
 Function Read-PackageSources {
     param($NuGetConfig)

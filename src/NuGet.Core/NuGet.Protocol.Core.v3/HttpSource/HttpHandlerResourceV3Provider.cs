@@ -9,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using NuGet.Configuration;
 using NuGet.Protocol.Core.Types;
-using NuGet.Protocol.Core.v3;
 
 namespace NuGet.Protocol
 {
@@ -38,8 +37,8 @@ namespace NuGet.Protocol
 
         private static HttpHandlerResourceV3 CreateResource(PackageSource packageSource)
         {
-            var uri = packageSource.SourceUri;
-            var proxy = ProxyCache.Instance.GetProxy(uri);
+            var sourceUri = packageSource.SourceUri;
+            var proxy = ProxyCache.Instance.GetProxy(sourceUri);
 
             // replace the handler with the proxy aware handler
             var clientHandler = new HttpClientHandler
@@ -53,7 +52,27 @@ namespace NuGet.Protocol
 
             if (proxy != null && HttpHandlerResourceV3.CredentialSerivce != null)
             {
-                messageHandler = new ProxyCredentialHandler(clientHandler, HttpHandlerResourceV3.CredentialSerivce, ProxyCache.Instance);
+                messageHandler = new ProxyAuthenticationHandler(clientHandler, HttpHandlerResourceV3.CredentialSerivce, ProxyCache.Instance);
+            }
+
+#if !IS_CORECLR
+            {
+                var innerHandler = messageHandler;
+
+                messageHandler = new StsAuthenticationHandler(packageSource, TokenStore.Instance)
+                {
+                    InnerHandler = messageHandler
+                };
+            }
+#endif
+            if (HttpHandlerResourceV3.CredentialSerivce != null)
+            {
+                var innerHandler = messageHandler;
+
+                messageHandler = new HttpSourceAuthenticationHandler(packageSource, clientHandler, HttpHandlerResourceV3.CredentialSerivce)
+                {
+                    InnerHandler = innerHandler
+                };
             }
 
             var resource = new HttpHandlerResourceV3(clientHandler, messageHandler);
