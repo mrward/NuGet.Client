@@ -74,7 +74,7 @@ namespace NuGet.CommandLine.Test
             Util.VerifyResultSuccess(result, LocalsHelpStringFragment);
         }
 
-        [Theory]
+        [Theory(Skip="Fails on SxS VS install")]
         [InlineData("http-cache")]
         [InlineData("packages-cache")]
         [InlineData("global-packages")]

@@ -1470,7 +1470,7 @@ EndProject");
             }
         }
 
-        [Fact]
+        [Fact(Skip="Fails on SxS VS install")]
         public void RestoreCommand_InvalidSolutionFile()
         {
             using (var randomTestFolder = TestFileSystemUtility.CreateRandomTestFolder())
