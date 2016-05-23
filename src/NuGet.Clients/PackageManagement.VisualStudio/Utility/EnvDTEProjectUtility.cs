@@ -24,7 +24,6 @@ using NuGet.ProjectManagement;
 using VSLangProj;
 using VSLangProj80;
 using VsWebSite;
-using Constants = NuGet.ProjectManagement.Constants;
 using EnvDTEProject = EnvDTE.Project;
 using EnvDTEProjectItem = EnvDTE.ProjectItem;
 using EnvDTEProjectItems = EnvDTE.ProjectItems;
@@ -362,7 +361,7 @@ namespace NuGet.PackageManagement.VisualStudio
         /// Returns the full path of the packages config file associated with the project.
         /// </summary>
         /// <param name="envDTEProject">The project.</param>
-        internal static string GetPackagesConfigFullPath(EnvDTEProject envDTEProject)
+        public static string GetPackagesConfigFullPath(EnvDTEProject envDTEProject)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 

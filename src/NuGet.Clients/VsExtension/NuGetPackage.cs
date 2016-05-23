@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -54,6 +55,7 @@ namespace NuGetVSExtension
     [ProvideOptionPage(typeof(GeneralOptionPage), "NuGet Package Manager", "General", 113, 115, true)]
     [ProvideSearchProvider(typeof(NuGetSearchProvider), "NuGet Search")]
     [ProvideBindingPath] // Definition dll needs to be on VS binding path
+    [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExistsAndFullyLoaded_string)] // We need to be loaded when solution loads for code that conditionally adds menu items to run.
     [ProvideAutoLoad(GuidList.guidAutoLoadNuGetString)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionBuilding_string)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.ProjectRetargeting_string)]
@@ -100,6 +102,9 @@ namespace NuGetVSExtension
 
         private OutputConsoleLogger _outputConsoleLogger;
         private readonly HashSet<Uri> _credentialRequested;
+
+        private const string CSharpProjectGuildString = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}";
+        private const string VBProjectGuidString = "{F184B08F-C81C-45F6-A57F-5ABD9991F28F}";
 
         public NuGetPackage()
         {
@@ -416,6 +421,11 @@ namespace NuGetVSExtension
             _mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (null != _mcs)
             {
+                // menu command for converting packages.config files to project.json
+                CommandID convertPackagesConfigCommandID = new CommandID(GuidList.guidNuGetDialogCmdSet, PkgCmdIDList.cmdidConvertPackagesConfig);
+                OleMenuCommand convertPackagesConfigCommand = new OleMenuCommand(ExecuteConvertPackagesConfigCommand, null, BeforeQueryStatusForConvertPackagesConfig, convertPackagesConfigCommandID);
+                _mcs.AddCommand(convertPackagesConfigCommand);
+
                 // menu command for opening Package Manager Console
                 CommandID toolwndCommandID = new CommandID(GuidList.guidNuGetConsoleCmdSet, PkgCmdIDList.cmdidPowerConsole);
                 OleMenuCommand powerConsoleExecuteCommand = new OleMenuCommand(ExecutePowerConsoleCommand, null, BeforeQueryStatusForPowerConsole, toolwndCommandID);
@@ -724,6 +734,10 @@ namespace NuGetVSExtension
             return windowFrame;
         }
 
+        private void ExecuteConvertPackagesConfigCommand(object sender, EventArgs e)
+        {
+        }
+
         private void ShowManageLibraryPackageDialog(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
@@ -997,6 +1011,131 @@ namespace NuGetVSExtension
         {
             OleMenuCommand command = (OleMenuCommand)sender;
             command.Enabled = !ConsoleStatus.IsBusy && !_powerConsoleCommandExecuting;
+        }
+
+        private void BeforeQueryStatusForConvertPackagesConfig(object sender, EventArgs args)
+        {
+            OleMenuCommand command = (OleMenuCommand)sender;
+
+            // Don't show command if experimental features aren't turned on
+            var settings = ServiceLocator.GetInstanceSafe<ISettings>();
+            var options = new GeneralOptions(settings);
+            var areExperimentalFeaturesEnabled = options.AreExperimentalFeaturesEnabled;
+
+            command.Visible = areExperimentalFeaturesEnabled && (IsPackageConfigInSupportedProjectSelected() || IsSupportedProjectWithPackagesConfigSelected());
+            command.Enabled = areExperimentalFeaturesEnabled && !ConsoleStatus.IsBusy && IsSolutionExistsAndNotDebuggingAndNotBuilding() && HasActiveLoadedSupportedProject;
+        }
+
+        private bool IsSupportedProjectWithPackagesConfigSelected()
+        {
+            if (!IsProjectSelected())
+            {
+                return false;
+            }
+
+            Project project = EnvDTEProjectUtility.GetActiveProject(VsMonitorSelection);
+            if (!IsProjectSupportedForPackagesConfigConversion(project))
+            {
+                return false;
+            }
+
+            // Does the project contain a packages.config file?
+            var packagesConfigFile = EnvDTEProjectUtility.GetPackagesConfigFullPath(project);
+            return File.Exists(packagesConfigFile);
+        }
+
+        private bool IsProjectSupportedForPackagesConfigConversion(Project project = null)
+        {
+            // We only support C# and VB projects
+            project = project ?? EnvDTEProjectUtility.GetActiveProject(VsMonitorSelection);
+            var kind = project.Kind;
+            return kind == CSharpProjectGuildString || kind == VBProjectGuidString;
+        }
+
+        private bool IsProjectSelected()
+        {
+            if (VsMonitorSelection == null)
+            {
+                return false;
+            }
+
+            IntPtr hHierarchy = IntPtr.Zero;
+            IntPtr hContainer = IntPtr.Zero;
+            try
+            {
+                IVsMultiItemSelect multiItemSelect;
+                uint itemId;
+                if (VsMonitorSelection.GetCurrentSelection(out hHierarchy, out itemId, out multiItemSelect, out hContainer) != 0)
+                {
+                    return false;
+                }
+                return itemId == VSConstants.VSITEMID_ROOT;
+            }
+            finally
+            {
+                if (hHierarchy != IntPtr.Zero)
+                {
+                    Marshal.Release(hHierarchy);
+                }
+                if (hContainer != IntPtr.Zero)
+                {
+                    Marshal.Release(hContainer);
+                }
+            }
+        }
+
+        private bool IsPackageConfigInSupportedProjectSelected()
+        {
+            if (!IsProjectSupportedForPackagesConfigConversion())
+            {
+                return false;
+            }
+
+            var selectedFileName = GetSelectedFileName();
+            return !string.IsNullOrEmpty(selectedFileName) && Path.GetFileName(selectedFileName).ToLower() == "packages.config";
+        }
+
+        private string GetSelectedFileName()
+        {
+            if (VsMonitorSelection == null)
+            {
+                return string.Empty;
+            }
+
+            IntPtr hHierarchy = IntPtr.Zero;
+            IntPtr hContainer = IntPtr.Zero;
+            try
+            {
+                IVsMultiItemSelect multiItemSelect;
+                uint itemId;
+                if (VsMonitorSelection.GetCurrentSelection(out hHierarchy, out itemId, out multiItemSelect, out hContainer) != 0)
+                {
+                    return string.Empty;
+                }
+                if (itemId >= VSConstants.VSITEMID_SELECTION)
+                {
+                    return string.Empty;
+                }
+                IVsHierarchy hierarchy = Marshal.GetUniqueObjectForIUnknown(hHierarchy) as IVsHierarchy;
+                if (hierarchy == null)
+                {
+                    return string.Empty;
+                }
+                string fileName;
+                hierarchy.GetCanonicalName(itemId, out fileName);
+                return fileName;
+            }
+            finally
+            {
+                if (hHierarchy != IntPtr.Zero)
+                {
+                    Marshal.Release(hHierarchy);
+                }
+                if (hContainer != IntPtr.Zero)
+                {
+                    Marshal.Release(hContainer);
+                }
+            }
         }
 
         private void BeforeQueryStatusForAddPackageDialog(object sender, EventArgs args)
