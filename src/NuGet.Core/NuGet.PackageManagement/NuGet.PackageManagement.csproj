@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="..\..\..\build\Common.props" Condition="Exists('..\..\..\Build\Common.props')" />
+  <PropertyGroup>
+    <AutoUnifyAssemblyReferences>true</AutoUnifyAssemblyReferences>
+    <CodeAnalysisRuleSet>..\..\..\NuGet.ruleset</CodeAnalysisRuleSet>
+    <RestoreNuGetPackages>true</RestoreNuGetPackages>
+    <PackagesDir>$(UserProfile)\.nuget\packages</PackagesDir>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(VisualStudioVersion)' == '14.0'">
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{394AEB96-493C-4839-A5AC-8D93CD2FAD40}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NuGet.PackageManagement</RootNamespace>
+    <AssemblyName>NuGet.PackageManagement</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>3b445626</NuGetPackageImportStamp>
+    <RestoreNuGetPackages>true</RestoreNuGetPackages>
+    <PlatformTarget>$(Platform)</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.XmlTransform, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.Web.Xdt.2.1.1\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NuGet.Core, Version=2.11.1.812, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NuGet.Core.2.11.1\lib\net40-Client\NuGet.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BuildIntegration\BuildIntegratedProjectAction.cs" />
+    <Compile Include="BuildIntegration\BuildIntegratedProjectCacheEntry.cs" />
+    <Compile Include="BuildIntegration\BuildIntegratedRestoreUtility.cs" />
+    <Compile Include="BuildIntegration\ProjectContextLogger.cs" />
+    <Compile Include="Context\IDEExecutionContext.cs" />
+    <Compile Include="Context\PackageManagementContext.cs" />
+    <Compile Include="Context\ResolutionContext.cs" />
+    <Compile Include="Context\UninstallationContext.cs" />
+    <Compile Include="Context\VersionConstraints.cs" />
+    <Compile Include="IDE\ActionsExecutedEventArgs.cs" />
+    <Compile Include="IDE\ICommonOperations.cs" />
+    <Compile Include="IDE\IDeleteOnRestartManager.cs" />
+    <Compile Include="IDE\IPackageRestoreManager.cs" />
+    <Compile Include="IDE\IProductUpdateService.cs" />
+    <Compile Include="IDE\ISolutionManager.cs" />
+    <Compile Include="IDE\PackageRestoreContext.cs" />
+    <Compile Include="IDE\PackageRestoreData.cs" />
+    <Compile Include="IDE\PackageRestoreFailedEventArgs.cs" />
+    <Compile Include="IDE\PackageRestoreManager.cs" />
+    <Compile Include="IDE\PackageRestoreResult.cs" />
+    <Compile Include="IDE\PackagesMarkedForDeletionEventArgs.cs" />
+    <Compile Include="NuGetPackageManager.cs" />
+    <Compile Include="NuGetProjectAction.cs" />
+    <Compile Include="PackageDownloader.cs" />
+    <Compile Include="PackageManagementConstants.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resolution\GatherCache.cs" />
+    <Compile Include="Resolution\GatherCacheResult.cs" />
+    <Compile Include="Resolution\GatherContext.cs" />
+    <Compile Include="Resolution\GatherExceptionHelpers.cs" />
+    <Compile Include="Resolution\PrunePackageTree.cs" />
+    <Compile Include="Resolution\ResolverGather.cs" />
+    <Compile Include="Resolution\UninstallResolver.cs" />
+    <Compile Include="ResolvedAction.cs" />
+    <Compile Include="Strings.Designer.cs" />
+    <Compile Include="Utility\CollectionExtensions.cs" />
+    <Compile Include="Utility\CustomExceptions.cs" />
+    <Compile Include="Utility\ExceptionUtility.cs" />
+    <Compile Include="Utility\NuGetEvent.cs" />
+    <Compile Include="Utility\NuGetEventTrigger.cs" />
+    <Compile Include="Utility\PackageReferenceComparer.cs" />
+    <Compile Include="Utility\PackagesFolderPathUtility.cs" />
+    <Compile Include="Utility\SourceRepositoryComparer.cs" />
+    <Compile Include="Utility\TriggerEventMethod.cs" />
+    <Compile Include="Utility\UriHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NuGet.Commands\NuGet.Commands.csproj">
+      <Project>{567e8582-0e73-4a34-a7d3-ed9486415523}</Project>
+      <Name>NuGet.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Common\NuGet.Common.csproj">
+      <Project>{98bee375-a5a0-4fc2-9b7a-25db41c8045d}</Project>
+      <Name>NuGet.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Configuration\NuGet.Configuration.csproj">
+      <Project>{e3ef26e1-80a7-4573-b3a4-1d4b0042616e}</Project>
+      <Name>NuGet.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Frameworks\NuGet.Frameworks.csproj">
+      <Project>{9A9A9F26-597A-4FA6-A4F1-415063484D9C}</Project>
+      <Name>NuGet.Frameworks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Logging\NuGet.Logging.csproj">
+      <Project>{c1c5b715-cd4c-44c2-b074-ba638612ac2f}</Project>
+      <Name>NuGet.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Packaging.Core.Types\NuGet.Packaging.Core.Types.csproj">
+      <Project>{46275450-3B62-4E89-8F7E-3FE2EE8513D2}</Project>
+      <Name>NuGet.Packaging.Core.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Packaging.Core\NuGet.Packaging.Core.csproj">
+      <Project>{d65583e4-8084-466a-ba4b-55a797ea047b}</Project>
+      <Name>NuGet.Packaging.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Packaging\NuGet.Packaging.csproj">
+      <Project>{bd6bbc90-60be-4e7d-8458-91e9cda66abe}</Project>
+      <Name>NuGet.Packaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.ProjectManagement\NuGet.ProjectManagement.csproj">
+      <Project>{2995463d-9849-4bd3-8a87-0b7e1c5e6812}</Project>
+      <Name>NuGet.ProjectManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.ProjectModel\NuGet.ProjectModel.csproj">
+      <Project>{f013e43f-b6d5-4f59-acf0-eecec2c794f5}</Project>
+      <Name>NuGet.ProjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Protocol.Core.Types\NuGet.Protocol.Core.Types.csproj">
+      <Project>{37C02980-2278-4494-8FF7-208D8078C21E}</Project>
+      <Name>NuGet.Protocol.Core.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Protocol.Core.v2\NuGet.Protocol.Core.v2.csproj">
+      <Project>{47120cfb-bafa-4fcc-b35a-ac62907d3af4}</Project>
+      <Name>NuGet.Protocol.Core.v2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Resolver\NuGet.Resolver.csproj">
+      <Project>{51aa27a9-b8b4-458f-9211-e6889b441573}</Project>
+      <Name>NuGet.Resolver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Versioning\NuGet.Versioning.csproj">
+      <Project>{24E62AB7-64E4-4975-9417-883559D1BC19}</Project>
+      <Name>NuGet.Versioning</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\..\build\common.targets" />
+  <Import Project="..\..\..\build\sign.targets" />
+</Project>

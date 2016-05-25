@@ -1,0 +1,296 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="..\..\..\build\Common.props" Condition="Exists('..\..\..\Build\Common.props')" />
+  <PropertyGroup>
+    <AutoUnifyAssemblyReferences>true</AutoUnifyAssemblyReferences>
+    <CodeAnalysisRuleSet>..\..\..\NuGet.ruleset</CodeAnalysisRuleSet>
+    <RestoreNuGetPackages>true</RestoreNuGetPackages>
+    <PackagesDir>$(UserProfile)\.nuget\packages</PackagesDir>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(VisualStudioVersion)' == '14.0'">
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{567E8582-0E73-4A34-A7D3-ED9486415523}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NuGet.Commands</RootNamespace>
+    <AssemblyName>NuGet.Commands</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>3b445626</NuGetPackageImportStamp>
+    <RestoreNuGetPackages>true</RestoreNuGetPackages>
+    <PlatformTarget>$(Platform)</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\submodules\Common\src\Microsoft.Extensions.Primitives\IChangeToken.cs">
+      <Link>Microsoft.Extensions.Primitives\IChangeToken.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.AspNet.FileProviders.Abstractions\IDirectoryContents.cs">
+      <Link>Microsoft.AspNet.FileProviders.Abstractions\IDirectoryContents.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.AspNet.FileProviders.Abstractions\IFileInfo.cs">
+      <Link>Microsoft.AspNet.FileProviders.Abstractions\IFileInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.AspNet.FileProviders.Abstractions\IFileProvider.cs">
+      <Link>Microsoft.AspNet.FileProviders.Abstractions\IFileProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.AspNet.FileProviders.Sources\Implementation\Constants.cs">
+      <Link>Microsoft.AspNet.FileProviders.Sources\Implementation\Constants.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.AspNet.FileProviders.Sources\Implementation\EnumerableDirectoryContents.cs">
+      <Link>Microsoft.AspNet.FileProviders.Sources\Implementation\EnumerableDirectoryContents.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.AspNet.FileProviders.Sources\Implementation\NoopChangeToken.cs">
+      <Link>Microsoft.AspNet.FileProviders.Sources\Implementation\NoopChangeToken.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.AspNet.FileProviders.Sources\Implementation\NotFoundDirectoryContents.cs">
+      <Link>Microsoft.AspNet.FileProviders.Sources\Implementation\NotFoundDirectoryContents.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.AspNet.FileProviders.Sources\Implementation\NotFoundFileInfo.cs">
+      <Link>Microsoft.AspNet.FileProviders.Sources\Implementation\NotFoundFileInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Abstractions\DirectoryInfoBase.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Implementation\DirectoryInfoBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Abstractions\DirectoryInfoWrapper.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Implementation\DirectoryInfoWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Abstractions\FileInfoBase.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Implementation\FileInfoBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Abstractions\FileInfoWrapper.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Implementation\FileInfoWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Abstractions\FileSystemInfoBase.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Implementation\FileSystemInfoBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\FilePatternMatch.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\FilePatternMatch.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\ILinearPattern.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\foo\ILinearPattern.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\IPathSegment.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\foo\IPathSegment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\IPattern.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\foo\IPattern.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\IPatternContext.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\foo\IPatternContext.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\IRaggedPattern.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\foo\IRaggedPattern.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\MatcherContext.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\foo\MatcherContext.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\PathSegments\CurrentPathSegment.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Internal\abc\CurrentPathSegment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\PathSegments\LiteralPathSegment.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Internal\abc\LiteralPathSegment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\PathSegments\ParentPathSegment.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Internal\abc\ParentPathSegment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\PathSegments\RecursiveWildcardSegment.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Internal\abc\RecursiveWildcardSegment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\PathSegments\WildcardPathSegment.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Internal\abc\WildcardPathSegment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\PatternContexts\PatternContext.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Internal\abc\PatternContext.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\PatternContexts\PatternContextLinear.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Internal\abc\PatternContextLinear.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\PatternContexts\PatternContextLinearExclude.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Internal\abc\PatternContextLinearExclude.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\PatternContexts\PatternContextLinearInclude.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Internal\abc\PatternContextLinearInclude.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\PatternContexts\PatternContextRagged.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Internal\abc\PatternContextRagged.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\PatternContexts\PatternContextRaggedExclude.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Internal\abc\PatternContextRaggedExclude.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\PatternContexts\PatternContextRaggedInclude.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Internal\abc\PatternContextRaggedInclude.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\Patterns\PatternBuilder.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Internal\abc\PatternBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Internal\PatternTestResult.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\foo\PatternTestResult.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Matcher.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\Matcher.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\MatcherExtensions.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\MatcherExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\PatternMatchingResult.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\PatternMatchingResult.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\FileSystem\src\Microsoft.Extensions.FileSystemGlobbing\Util\StringComparisonHelper.cs">
+      <Link>Microsoft.Extensions.FileSystemGlobbing\abc\StringComparisonHelper.cs</Link>
+    </Compile>
+    <Compile Include="Internal\HashCodeCombiner.cs" />
+    <Compile Include="RestoreCommand\CompatibilityCheckResult.cs" />
+    <Compile Include="RestoreCommand\CompatibilityIssue.cs" />
+    <Compile Include="RestoreCommand\CompatilibityChecker.cs" />
+    <Compile Include="RestoreCommand\ContentFiles\ContentFileUtils.cs" />
+    <Compile Include="RestoreCommand\ContentFiles\FileProviderGlobbingDirectory.cs" />
+    <Compile Include="RestoreCommand\ContentFiles\FileProviderGlobbingFile.cs" />
+    <Compile Include="RestoreCommand\ContentFiles\VirtualFileInfo.cs" />
+    <Compile Include="RestoreCommand\ContentFiles\VirtualFileProvider.cs" />
+    <Compile Include="RestoreCommand\LockFileBuilder.cs" />
+    <Compile Include="RestoreCommand\MSBuildProjectReferenceProvider.cs" />
+    <Compile Include="RestoreCommand\MSBuildRestoreResult.cs" />
+    <Compile Include="RestoreCommand\RequestFactory\IRestoreRequestProvider.cs" />
+    <Compile Include="RestoreCommand\RequestFactory\MSBuildP2PRestoreRequestProvider.cs" />
+    <Compile Include="RestoreCommand\RequestFactory\ProjectJsonRestoreRequestProvider.cs" />
+    <Compile Include="RestoreCommand\RequestFactory\RestoreArgs.cs" />
+    <Compile Include="RestoreCommand\ResolverConflict.cs" />
+    <Compile Include="RestoreCommand\ResolverRequest.cs" />
+    <Compile Include="RestoreCommand\RestoreCommand.cs" />
+    <Compile Include="RestoreCommand\RestoreCommandProviders.cs" />
+    <Compile Include="RestoreCommand\RestoreCommandProvidersCache.cs" />
+    <Compile Include="RestoreCommand\RestoreGraph.cs" />
+    <Compile Include="RestoreCommand\RestoreRequest.cs" />
+    <Compile Include="RestoreCommand\RestoreResult.cs" />
+    <Compile Include="RestoreCommand\RestoreRunner.cs" />
+    <Compile Include="RestoreCommand\RestoreSummary.cs" />
+    <Compile Include="RestoreCommand\RestoreSummaryRequest.cs" />
+    <Compile Include="RestoreCommand\ToolRestoreResult.cs" />
+    <Compile Include="RestoreCommand\Utility\IncludeFlagUtils.cs" />
+    <Compile Include="RestoreCommand\Utility\LockFileUtils.cs" />
+    <Compile Include="RestoreCommand\Utility\PathUtility.cs" />
+    <Compile Include="Strings.Designer.cs" />
+    <Compile Include="Utility\RequestRuntimeUtility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NuGet.Client\NuGet.Client.csproj">
+      <Project>{ba3543a8-874c-4f42-8757-c7ef7d17c8ee}</Project>
+      <Name>NuGet.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Common\NuGet.Common.csproj">
+      <Project>{98bee375-a5a0-4fc2-9b7a-25db41c8045d}</Project>
+      <Name>NuGet.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Configuration\NuGet.Configuration.csproj">
+      <Project>{e3ef26e1-80a7-4573-b3a4-1d4b0042616e}</Project>
+      <Name>NuGet.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.ContentModel\NuGet.ContentModel.csproj">
+      <Project>{6ca365cf-221d-4e7a-99b2-162aac486d24}</Project>
+      <Name>NuGet.ContentModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.DependencyResolver.Core\NuGet.DependencyResolver.Core.csproj">
+      <Project>{cf8e1753-ee98-410f-bb4b-6624b19c6b64}</Project>
+      <Name>NuGet.DependencyResolver.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.DependencyResolver\NuGet.DependencyResolver.csproj">
+      <Project>{002ae92e-01e5-4a38-996b-731a7a048d58}</Project>
+      <Name>NuGet.DependencyResolver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Frameworks\NuGet.Frameworks.csproj">
+      <Project>{9a9a9f26-597a-4fa6-a4f1-415063484d9c}</Project>
+      <Name>NuGet.Frameworks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.LibraryModel\NuGet.LibraryModel.csproj">
+      <Project>{13883E8E-7DE1-4EDD-8E4A-C5357BA8CD81}</Project>
+      <Name>NuGet.LibraryModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Logging\NuGet.Logging.csproj">
+      <Project>{c1c5b715-cd4c-44c2-b074-ba638612ac2f}</Project>
+      <Name>NuGet.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Packaging.Core.Types\NuGet.Packaging.Core.Types.csproj">
+      <Project>{46275450-3b62-4e89-8f7e-3fe2ee8513d2}</Project>
+      <Name>NuGet.Packaging.Core.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Packaging.Core\NuGet.Packaging.Core.csproj">
+      <Project>{d65583e4-8084-466a-ba4b-55a797ea047b}</Project>
+      <Name>NuGet.Packaging.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Packaging\NuGet.Packaging.csproj">
+      <Project>{bd6bbc90-60be-4e7d-8458-91e9cda66abe}</Project>
+      <Name>NuGet.Packaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.ProjectModel\NuGet.ProjectModel.csproj">
+      <Project>{f013e43f-b6d5-4f59-acf0-eecec2c794f5}</Project>
+      <Name>NuGet.ProjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Protocol.Core.Types\NuGet.Protocol.Core.Types.csproj">
+      <Project>{37c02980-2278-4494-8ff7-208d8078c21e}</Project>
+      <Name>NuGet.Protocol.Core.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Protocol.Core.v3\NuGet.Protocol.Core.v3.csproj">
+      <Project>{020f4c88-3a5c-4b89-9868-089e867cc223}</Project>
+      <Name>NuGet.Protocol.Core.v3</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Repositories\NuGet.Repositories.csproj">
+      <Project>{24DE9E2C-4ADC-48E6-ADF0-1E2B00596ECD}</Project>
+      <Name>NuGet.Repositories</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.RuntimeModel\NuGet.RuntimeModel.csproj">
+      <Project>{79fa1e82-c09b-4f6e-b4e0-cf0f8ae5d365}</Project>
+      <Name>NuGet.RuntimeModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Versioning\NuGet.Versioning.csproj">
+      <Project>{24E62AB7-64E4-4975-9417-883559D1BC19}</Project>
+      <Name>NuGet.Versioning</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\..\build\common.targets" />
+  <Import Project="..\..\..\build\sign.targets" />
+</Project>

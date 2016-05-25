@@ -15,11 +15,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{32A23995-14C7-483B-98C3-0AE4185373EA}</ProjectGuid>
+    <ProjectGuid>{98BEE375-A5A0-4FC2-9B7A-25DB41C8045D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NuGet.Credentials</RootNamespace>
-    <AssemblyName>NuGet.Credentials</AssemblyName>
+    <RootNamespace>NuGet.Common</RootNamespace>
+    <AssemblyName>NuGet.Common</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>3b445626</NuGetPackageImportStamp>
@@ -44,20 +44,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Web.XmlTransform, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Web.Xdt.2.1.1\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NuGet.Core, Version=2.11.1.812, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NuGet.Core.2.11.1\lib\net40-Client\NuGet.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -66,41 +55,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CredentialResponse.cs" />
-    <Compile Include="CredentialsConstants.cs" />
-    <Compile Include="CredentialProviderAdapter.cs" />
-    <Compile Include="CredentialService.cs" />
-    <Compile Include="CredentialStatus.cs" />
-    <Compile Include="ICredentialProvider.cs" />
-    <Compile Include="ICredentialService.cs" />
-    <Compile Include="CredentialServiceAdapter.cs" />
-    <Compile Include="PluginCredentialProvider.cs" />
-    <Compile Include="PluginCredentialProviderBuilder.cs" />
-    <Compile Include="PluginCredentialRequest.cs" />
-    <Compile Include="PluginCredentialResponse.cs" />
-    <Compile Include="PluginException.cs" />
+    <Compile Include="AsyncLazy.cs" />
+    <Compile Include="ConcurrencyUtilities.cs" />
+    <Compile Include="CryptoHashProvider.cs" />
+    <Compile Include="ExceptionUtilities.cs" />
+    <Compile Include="NetworkProtocolUtility.cs" />
+    <Compile Include="NuGetEnvironment.cs" />
+    <Compile Include="NuGetFolderPath.cs" />
+    <Compile Include="PathResolver.cs" />
+    <Compile Include="PathUtility.cs" />
+    <Compile Include="PathUtil\FileUtility.cs" />
+    <Compile Include="Preprocessor.cs" />
+    <Compile Include="ProjectJsonPathUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProviderException.cs" />
-    <Compile Include="Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
+    <Compile Include="RuntimeEnvironmentHelper.cs" />
+    <Compile Include="Strings.Designer.cs" />
+    <Compile Include="Token.cs" />
+    <Compile Include="TokenCategory.cs" />
+    <Compile Include="Tokenizer.cs" />
+    <Compile Include="UriUtility.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\NuGet.Core\NuGet.Configuration\NuGet.Configuration.csproj">
-      <Project>{E3EF26E1-80A7-4573-B3A4-1D4B0042616E}</Project>
-      <Name>NuGet.Configuration</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <EmbeddedResource Include="Strings.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\..\build\common.targets" />

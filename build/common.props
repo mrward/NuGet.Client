@@ -14,7 +14,7 @@
 
 		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
 
-		<OutputPath>$(ArtifactRoot)\$(MSBuildProjectName)\$(Configuration)</OutputPath>
+		<OutputPath>$(ArtifactRoot)\$(Configuration)</OutputPath>
 		<OutputPath>$([System.IO.Path]::GetFullPath( $(OutputPath) ))\</OutputPath>
 
 		<AppxPackageDir>$(OutputPath)</AppxPackageDir>

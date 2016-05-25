@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="..\..\..\build\Common.props" Condition="Exists('..\..\..\Build\Common.props')" />
+  <PropertyGroup>
+    <AutoUnifyAssemblyReferences>true</AutoUnifyAssemblyReferences>
+    <CodeAnalysisRuleSet>..\..\..\NuGet.ruleset</CodeAnalysisRuleSet>
+    <RestoreNuGetPackages>true</RestoreNuGetPackages>
+    <PackagesDir>$(UserProfile)\.nuget\packages</PackagesDir>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(VisualStudioVersion)' == '14.0'">
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A2B06FA8-BDBC-4459-A92A-161862B2AA97}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NuGet.Indexing</RootNamespace>
+    <AssemblyName>NuGet.Indexing</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>3b445626</NuGetPackageImportStamp>
+    <RestoreNuGetPackages>true</RestoreNuGetPackages>
+    <PlatformTarget>$(Platform)</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\submodules\NuGet.Services.Metadata\src\NuGet.Indexing\CamelCaseFilter.cs">
+      <Link>CamelCaseFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\NuGet.Services.Metadata\src\NuGet.Indexing\DescriptionAnalyzer.cs">
+      <Link>DescriptionAnalyzer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\NuGet.Services.Metadata\src\NuGet.Indexing\DotTokenizer.cs">
+      <Link>DotTokenizer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\NuGet.Services.Metadata\src\NuGet.Indexing\IdentifierAnalyzer.cs">
+      <Link>IdentifierAnalyzer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\NuGet.Services.Metadata\src\NuGet.Indexing\IdentifierKeywordAnalyzer.cs">
+      <Link>IdentifierKeywordAnalyzer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\NuGet.Services.Metadata\src\NuGet.Indexing\NuGetQuery.cs">
+      <Link>NuGetQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\NuGet.Services.Metadata\src\NuGet.Indexing\OwnerAnalyzer.cs">
+      <Link>OwnerAnalyzer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\NuGet.Services.Metadata\src\NuGet.Indexing\SemanticVersionFilter.cs">
+      <Link>SemanticVersionFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\NuGet.Services.Metadata\src\NuGet.Indexing\TagsAnalyzer.cs">
+      <Link>TagsAnalyzer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\NuGet.Services.Metadata\src\NuGet.Indexing\TokenizingHelper.cs">
+      <Link>TokenizingHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\submodules\NuGet.Services.Metadata\src\NuGet.Indexing\VersionAnalyzer.cs">
+      <Link>VersionAnalyzer.cs</Link>
+    </Compile>
+    <Compile Include="DownloadCountResultsIndexer.cs" />
+    <Compile Include="ISearchResultsAggregator.cs" />
+    <Compile Include="ISearchResultsIndexer.cs" />
+    <Compile Include="PackageAnalyzer.cs" />
+    <Compile Include="RelevanceSearchResultsIndexer.cs" />
+    <Compile Include="SearchResultsAggregator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NuGet.Packaging.Core.Types\NuGet.Packaging.Core.Types.csproj">
+      <Project>{46275450-3b62-4e89-8f7e-3fe2ee8513d2}</Project>
+      <Name>NuGet.Packaging.Core.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Protocol.Core.Types\NuGet.Protocol.Core.Types.csproj">
+      <Project>{37c02980-2278-4494-8ff7-208d8078c21e}</Project>
+      <Name>NuGet.Protocol.Core.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Versioning\NuGet.Versioning.csproj">
+      <Project>{24e62ab7-64e4-4975-9417-883559d1bc19}</Project>
+      <Name>NuGet.Versioning</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\..\build\common.targets" />
+  <Import Project="..\..\..\build\sign.targets" />
+</Project>

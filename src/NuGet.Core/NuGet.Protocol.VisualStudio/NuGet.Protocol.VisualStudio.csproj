@@ -15,11 +15,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{32A23995-14C7-483B-98C3-0AE4185373EA}</ProjectGuid>
+    <ProjectGuid>{DE390D30-B8FF-44D7-8411-A4553B38A0B1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NuGet.Credentials</RootNamespace>
-    <AssemblyName>NuGet.Credentials</AssemblyName>
+    <RootNamespace>NuGet.Protocol.VisualStudio</RootNamespace>
+    <AssemblyName>NuGet.Protocol.VisualStudio</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>3b445626</NuGetPackageImportStamp>
@@ -48,16 +48,14 @@
       <HintPath>..\..\..\packages\Microsoft.Web.Xdt.2.1.1\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="NuGet.Core, Version=2.11.1.812, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\NuGet.Core.2.11.1\lib\net40-Client\NuGet.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -66,37 +64,55 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CredentialResponse.cs" />
-    <Compile Include="CredentialsConstants.cs" />
-    <Compile Include="CredentialProviderAdapter.cs" />
-    <Compile Include="CredentialService.cs" />
-    <Compile Include="CredentialStatus.cs" />
-    <Compile Include="ICredentialProvider.cs" />
-    <Compile Include="ICredentialService.cs" />
-    <Compile Include="CredentialServiceAdapter.cs" />
-    <Compile Include="PluginCredentialProvider.cs" />
-    <Compile Include="PluginCredentialProviderBuilder.cs" />
-    <Compile Include="PluginCredentialRequest.cs" />
-    <Compile Include="PluginCredentialResponse.cs" />
-    <Compile Include="PluginException.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProviderException.cs" />
-    <Compile Include="Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
+    <Compile Include="Extensions\FactoryExtensionsVS.cs" />
+    <Compile Include="Properties\Strings.Designer.cs" />
+    <Compile Include="Providers\AutoCompleteResourceLocalProvider.cs" />
+    <Compile Include="Providers\PackageMetadataResourceLocalProvider.cs" />
+    <Compile Include="Providers\PackageSearchResourceLocalProvider.cs" />
+    <Compile Include="Resources\AutoCompleteResourceLocal.cs" />
+    <Compile Include="Resources\PackageMetadataResourceLocal.cs" />
+    <Compile Include="Resources\PackageSearchResourceLocal.cs" />
+    <Compile Include="VSSourceRepositoryProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Strings.resx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NuGet.Core\NuGet.Configuration\NuGet.Configuration.csproj">
-      <Project>{E3EF26E1-80A7-4573-B3A4-1D4B0042616E}</Project>
+    <ProjectReference Include="..\NuGet.Configuration\NuGet.Configuration.csproj">
+      <Project>{e3ef26e1-80a7-4573-b3a4-1d4b0042616e}</Project>
       <Name>NuGet.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Logging\NuGet.Logging.csproj">
+      <Project>{c1c5b715-cd4c-44c2-b074-ba638612ac2f}</Project>
+      <Name>NuGet.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Packaging.Core.Types\NuGet.Packaging.Core.Types.csproj">
+      <Project>{46275450-3b62-4e89-8f7e-3fe2ee8513d2}</Project>
+      <Name>NuGet.Packaging.Core.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Packaging.Core\NuGet.Packaging.Core.csproj">
+      <Project>{d65583e4-8084-466a-ba4b-55a797ea047b}</Project>
+      <Name>NuGet.Packaging.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Packaging\NuGet.Packaging.csproj">
+      <Project>{bd6bbc90-60be-4e7d-8458-91e9cda66abe}</Project>
+      <Name>NuGet.Packaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Protocol.Core.Types\NuGet.Protocol.Core.Types.csproj">
+      <Project>{37C02980-2278-4494-8FF7-208D8078C21E}</Project>
+      <Name>NuGet.Protocol.Core.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Protocol.Core.v2\NuGet.Protocol.Core.v2.csproj">
+      <Project>{47120cfb-bafa-4fcc-b35a-ac62907d3af4}</Project>
+      <Name>NuGet.Protocol.Core.v2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Protocol.Core.v3\NuGet.Protocol.Core.v3.csproj">
+      <Project>{020f4c88-3a5c-4b89-9868-089e867cc223}</Project>
+      <Name>NuGet.Protocol.Core.v3</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Versioning\NuGet.Versioning.csproj">
+      <Project>{24E62AB7-64E4-4975-9417-883559D1BC19}</Project>
+      <Name>NuGet.Versioning</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

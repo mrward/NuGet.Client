@@ -15,11 +15,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{32A23995-14C7-483B-98C3-0AE4185373EA}</ProjectGuid>
+    <ProjectGuid>{E3EF26E1-80A7-4573-B3A4-1D4B0042616E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NuGet.Credentials</RootNamespace>
-    <AssemblyName>NuGet.Credentials</AssemblyName>
+    <RootNamespace>NuGet.Configuration</RootNamespace>
+    <AssemblyName>NuGet.Configuration</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>3b445626</NuGetPackageImportStamp>
@@ -44,20 +44,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Web.XmlTransform, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Web.Xdt.2.1.1\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NuGet.Core, Version=2.11.1.812, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NuGet.Core.2.11.1\lib\net40-Client\NuGet.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -66,41 +55,43 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CredentialResponse.cs" />
-    <Compile Include="CredentialsConstants.cs" />
-    <Compile Include="CredentialProviderAdapter.cs" />
-    <Compile Include="CredentialService.cs" />
-    <Compile Include="CredentialStatus.cs" />
-    <Compile Include="ICredentialProvider.cs" />
-    <Compile Include="ICredentialService.cs" />
-    <Compile Include="CredentialServiceAdapter.cs" />
-    <Compile Include="PluginCredentialProvider.cs" />
-    <Compile Include="PluginCredentialProviderBuilder.cs" />
-    <Compile Include="PluginCredentialRequest.cs" />
-    <Compile Include="PluginCredentialResponse.cs" />
-    <Compile Include="PluginException.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProviderException.cs" />
-    <Compile Include="Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+    <Compile Include="..\NuGet.Shared\HashCodeCombiner.cs">
+      <Link>HashCodeCombiner.cs</Link>
     </Compile>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Credential\CredentialStore.cs" />
+    <Compile Include="Credential\ICredentialCache.cs" />
+    <Compile Include="Exceptions\NuGetConfigurationException.cs" />
+    <Compile Include="PackageSource\IPackageSourceProvider.cs" />
+    <Compile Include="PackageSource\NuGetConstants.cs" />
+    <Compile Include="PackageSource\PackageSource.cs" />
+    <Compile Include="PackageSource\PackageSourceProvider.cs" />
+    <Compile Include="Proxy\EnvironmentVariableWrapper.cs" />
+    <Compile Include="Proxy\IEnvironmentVariableReader.cs" />
+    <Compile Include="Proxy\IProxyCache.cs" />
+    <Compile Include="Proxy\ProxyCache.cs" />
+    <Compile Include="Resources.Designer.cs" />
+    <Compile Include="Settings\ConfigurationDefaults.cs" />
+    <Compile Include="Settings\IMachineWideSettings.cs" />
+    <Compile Include="Settings\ISettings.cs" />
+    <Compile Include="Settings\NullSettings.cs" />
+    <Compile Include="Settings\Settings.cs" />
+    <Compile Include="Settings\SettingValue.cs" />
+    <Compile Include="Utility\ConfigurationContants.cs" />
+    <Compile Include="Utility\EncryptionUtility.cs" />
+    <Compile Include="Utility\FileSystemUtility.cs" />
+    <Compile Include="Utility\IExtensionLocator.cs" />
+    <Compile Include="Utility\SettingsUtility.cs" />
+    <Compile Include="Utility\XmlUtility.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Resources.resx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NuGet.Core\NuGet.Configuration\NuGet.Configuration.csproj">
-      <Project>{E3EF26E1-80A7-4573-B3A4-1D4B0042616E}</Project>
-      <Name>NuGet.Configuration</Name>
+    <ProjectReference Include="..\NuGet.Common\NuGet.Common.csproj">
+      <Project>{98bee375-a5a0-4fc2-9b7a-25db41c8045d}</Project>
+      <Name>NuGet.Common</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\..\build\common.targets" />

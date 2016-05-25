@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="..\..\..\build\Common.props" Condition="Exists('..\..\..\Build\Common.props')" />
+  <PropertyGroup>
+    <AutoUnifyAssemblyReferences>true</AutoUnifyAssemblyReferences>
+    <CodeAnalysisRuleSet>..\..\..\NuGet.ruleset</CodeAnalysisRuleSet>
+    <RestoreNuGetPackages>true</RestoreNuGetPackages>
+    <PackagesDir>$(UserProfile)\.nuget\packages</PackagesDir>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(VisualStudioVersion)' == '14.0'">
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{020F4C88-3A5C-4B89-9868-089E867CC223}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NuGet.Protocol.Core.v3</RootNamespace>
+    <AssemblyName>NuGet.Protocol.Core.v3</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>3b445626</NuGetPackageImportStamp>
+    <RestoreNuGetPackages>true</RestoreNuGetPackages>
+    <PlatformTarget>$(Platform)</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CachingSourceProvider.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Converters\JsonExtensions.cs" />
+    <Compile Include="Converters\MetadataFieldConverter.cs" />
+    <Compile Include="Converters\NuGetVersionConverter.cs" />
+    <Compile Include="Converters\OnDemandParsedVersionsConverter.cs" />
+    <Compile Include="Converters\PackageDependencyGroupConverter.cs" />
+    <Compile Include="Converters\ParserConstants.cs" />
+    <Compile Include="Converters\SafeBoolConverter.cs" />
+    <Compile Include="Converters\VersionInfoConverter.cs" />
+    <Compile Include="DependencyInfo\DependencyInfo.cs" />
+    <Compile Include="DependencyInfo\PackageInfo.cs" />
+    <Compile Include="DependencyInfo\RegistrationInfo.cs" />
+    <Compile Include="DependencyInfo\ResolverMetadataClient.cs" />
+    <Compile Include="DependencyInfo\Trim.cs" />
+    <Compile Include="DependencyInfo\Utils.cs" />
+    <Compile Include="FactoryExtensionsV3.cs" />
+    <Compile Include="FindPackageByIdDependencyInfo.cs" />
+    <Compile Include="HttpSource\CredentialHelper.cs" />
+    <Compile Include="HttpSource\HttpHandlerResourceV3.cs" />
+    <Compile Include="HttpSource\HttpHandlerResourceV3Provider.cs" />
+    <Compile Include="HttpSource\HttpRequestMessageExtensions.cs" />
+    <Compile Include="HttpSource\HttpRetryHandler.cs" />
+    <Compile Include="HttpSource\HttpSource.cs" />
+    <Compile Include="HttpSource\HttpSourceResource.cs" />
+    <Compile Include="HttpSource\HttpSourceResourceProvider.cs" />
+    <Compile Include="HttpSource\HttpSourceResult.cs" />
+    <Compile Include="HttpSource\HttpStreamValidation.cs" />
+    <Compile Include="HttpSource\IHttpRetryHandler.cs" />
+    <Compile Include="HttpSource\STSAuthHelper.cs" />
+    <Compile Include="LegacyFeed\AutoCompleteResourceV2Feed.cs" />
+    <Compile Include="LegacyFeed\AutoCompleteResourceV2FeedProvider.cs" />
+    <Compile Include="LegacyFeed\DependencyInfoResourceV2Feed.cs" />
+    <Compile Include="LegacyFeed\DependencyInfoResourceV2FeedProvider.cs" />
+    <Compile Include="LegacyFeed\DownloadResourceV2Feed.cs" />
+    <Compile Include="LegacyFeed\DownloadResourceV2FeedProvider.cs" />
+    <Compile Include="LegacyFeed\MetadataResourceV2Feed.cs" />
+    <Compile Include="LegacyFeed\MetadataResourceV2FeedProvider.cs" />
+    <Compile Include="LegacyFeed\ODataServiceDocumentResourceV2.cs" />
+    <Compile Include="LegacyFeed\ODataServiceDocumentResourceV2Provider.cs" />
+    <Compile Include="LegacyFeed\PackageMetadataResourceV2Feed.cs" />
+    <Compile Include="LegacyFeed\PackageMetadataResourceV2FeedProvider.cs" />
+    <Compile Include="LegacyFeed\PackageSearchResourceV2Feed.cs" />
+    <Compile Include="LegacyFeed\PackageSearchResourceV2FeedProvider.cs" />
+    <Compile Include="LegacyFeed\V2FeedPackageInfo.cs" />
+    <Compile Include="LegacyFeed\V2FeedParser.cs" />
+    <Compile Include="LocalRepositories\CachedPackageInfo.cs" />
+    <Compile Include="LocalRepositories\LocalV2FindPackageByIdResource.cs" />
+    <Compile Include="LocalRepositories\LocalV2FindPackageByIdResourceProvider.cs" />
+    <Compile Include="LocalRepositories\LocalV3FindPackageByIdResource.cs" />
+    <Compile Include="LocalRepositories\LocalV3FindPackageByIdResourceProvider.cs" />
+    <Compile Include="Model\PackageSearchMetadata.cs" />
+    <Compile Include="Model\PackageSearchMetadataV2Feed.cs" />
+    <Compile Include="Providers\AutoCompleteResourceV3Provider.cs" />
+    <Compile Include="Providers\DependencyInfoResourceV3Provider.cs" />
+    <Compile Include="Providers\DownloadResourceV3Provider.cs" />
+    <Compile Include="Providers\ListCommandResourceV3Provider.cs" />
+    <Compile Include="Providers\MetadataResourceV3Provider.cs" />
+    <Compile Include="Providers\PackageMetadataResourceV3Provider.cs" />
+    <Compile Include="Providers\PackageSearchResourceV3Provider.cs" />
+    <Compile Include="Providers\PackageUpdateResourceV2Provider.cs" />
+    <Compile Include="Providers\PackageUpdateResourceV3Provider.cs" />
+    <Compile Include="Providers\RawSearchResourceV3Provider.cs" />
+    <Compile Include="Providers\RegistrationResourceV3Provider.cs" />
+    <Compile Include="Providers\ReportAbuseResourceV3Provider.cs" />
+    <Compile Include="Providers\ServiceIndexResourceV3Provider.cs" />
+    <Compile Include="RemoteRepositories\HttpFileSystemBasedFindPackageByIdResource.cs" />
+    <Compile Include="RemoteRepositories\HttpFileSystemBasedFindPackageByIdResourceProvider.cs" />
+    <Compile Include="RemoteRepositories\PackageUtilities.cs" />
+    <Compile Include="RemoteRepositories\RemoteV2FindPackageByIdResource.cs" />
+    <Compile Include="RemoteRepositories\RemoteV2FindPackageByIdResourceProvider.cs" />
+    <Compile Include="RemoteRepositories\RemoteV3FindPackageByIdResource.cs" />
+    <Compile Include="RemoteRepositories\RemoteV3FindPackagePackageByIdResourceProvider.cs" />
+    <Compile Include="Resources\AutoCompleteResourceV3.cs" />
+    <Compile Include="Resources\DependencyInfoResourceV3.cs" />
+    <Compile Include="Resources\DownloadResourceV3.cs" />
+    <Compile Include="Resources\FindPackageByIdResource.cs" />
+    <Compile Include="Resources\MetadataResourceV3.cs" />
+    <Compile Include="Resources\PackageMetadataResourceV3.cs" />
+    <Compile Include="Resources\PackageSearchResourceV3.cs" />
+    <Compile Include="Resources\PackageUpdateResource.cs" />
+    <Compile Include="Resources\RawSearchResourceV3.cs" />
+    <Compile Include="Resources\RegistrationResourceV3.cs" />
+    <Compile Include="Resources\ReportAbuseResourceV3.cs" />
+    <Compile Include="Resources\ServiceIndexResourceV3.cs" />
+    <Compile Include="Strings.Designer.cs" />
+    <Compile Include="Utility\GetDownloadResultUtility.cs" />
+    <Compile Include="Utility\GlobalPackagesFolderUtility.cs" />
+    <Compile Include="Utility\OfflineFeedAddContext.cs" />
+    <Compile Include="Utility\OfflineFeedUtility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NuGet.Common\NuGet.Common.csproj">
+      <Project>{98bee375-a5a0-4fc2-9b7a-25db41c8045d}</Project>
+      <Name>NuGet.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Configuration\NuGet.Configuration.csproj">
+      <Project>{E3EF26E1-80A7-4573-B3A4-1D4B0042616E}</Project>
+      <Name>NuGet.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Frameworks\NuGet.Frameworks.csproj">
+      <Project>{9A9A9F26-597A-4FA6-A4F1-415063484D9C}</Project>
+      <Name>NuGet.Frameworks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Logging\NuGet.Logging.csproj">
+      <Project>{c1c5b715-cd4c-44c2-b074-ba638612ac2f}</Project>
+      <Name>NuGet.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Packaging.Core.Types\NuGet.Packaging.Core.Types.csproj">
+      <Project>{46275450-3B62-4E89-8F7E-3FE2EE8513D2}</Project>
+      <Name>NuGet.Packaging.Core.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Packaging.Core\NuGet.Packaging.Core.csproj">
+      <Project>{d65583e4-8084-466a-ba4b-55a797ea047b}</Project>
+      <Name>NuGet.Packaging.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Packaging\NuGet.Packaging.csproj">
+      <Project>{bd6bbc90-60be-4e7d-8458-91e9cda66abe}</Project>
+      <Name>NuGet.Packaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Protocol.Core.Types\NuGet.Protocol.Core.Types.csproj">
+      <Project>{37c02980-2278-4494-8ff7-208d8078c21e}</Project>
+      <Name>NuGet.Protocol.Core.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuGet.Versioning\NuGet.Versioning.csproj">
+      <Project>{24E62AB7-64E4-4975-9417-883559D1BC19}</Project>
+      <Name>NuGet.Versioning</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\..\build\common.targets" />
+  <Import Project="..\..\..\build\sign.targets" />
+</Project>
