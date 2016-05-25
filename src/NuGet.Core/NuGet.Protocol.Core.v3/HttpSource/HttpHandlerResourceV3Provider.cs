@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Protocol.Core.Types;
 using NuGet.Protocol.Core.v3;
@@ -121,7 +122,7 @@ namespace NuGet.Protocol
 
                         return response;
                     }
-                    catch (HttpRequestException ex)
+                    catch (Exception ex)
                     {
                         if (ProxyAuthenticationRequired(ex) &&
                             HttpHandlerResourceV3.PromptForProxyCredentials != null)
@@ -144,6 +145,11 @@ namespace NuGet.Protocol
             // Returns true if the cause of the exception is proxy authentication failure
             private bool ProxyAuthenticationRequired(Exception ex)
             {
+                if (!(ex is HttpRequestException))
+                {
+                    return IsMonoProxyAuthenticationRequiredError(ex as WebException);
+                }
+
                 var webException = ex.InnerException as WebException;
                 if (webException == null)
                 {
@@ -152,6 +158,15 @@ namespace NuGet.Protocol
 
                 var response = webException.Response as HttpWebResponse;
                 return response?.StatusCode == HttpStatusCode.ProxyAuthenticationRequired;
+            }
+
+            private static bool IsMonoProxyAuthenticationRequiredError(WebException ex)
+            {
+                return ex != null &&
+                    ex.Status == WebExceptionStatus.SecureChannelFailure &&
+                    RuntimeEnvironmentHelper.IsMono &&
+                    ex.Message != null &&
+                    ex.Message.Contains("The remote server returned a 407 status code.");
             }
 
             private async Task<bool> AcquireCredentialsAsync(Uri requestUri, Guid beforeAuthId, CancellationToken cancellationToken)
