@@ -110,6 +110,15 @@ namespace NuGet.Protocol
                             HttpHandlerResourceV3.ProxyPassed(Proxy);
                         }
 
+                        if (response.StatusCode == HttpStatusCode.ProxyAuthenticationRequired &&
+                            HttpHandlerResourceV3.PromptForProxyCredentials != null)
+                        {
+                            if (await AcquireCredentialsAsync(request.RequestUri, beforeAuthId, cancellationToken))
+                            {
+                                continue;
+                            }
+                        }
+
                         return response;
                     }
                     catch (HttpRequestException ex)
@@ -119,41 +128,9 @@ namespace NuGet.Protocol
                         {
                             ICredentials currentCredentials = Proxy.Credentials;
 
-                            try
+                            if (!await AcquireCredentialsAsync(request.RequestUri, beforeAuthId, cancellationToken))
                             {
-                                await _credentialPromptLock.WaitAsync();
-
-                                // Check if the credentials have already changed
-                                if (beforeAuthId != _lastAuthId)
-                                {
-                                    continue;
-                                }
-
-                                // Limit the number of retries
-                                _authRetries++;
-                                if (_authRetries >= MaxAuthRetries)
-                                {
-                                    throw;
-                                }
-
-                                // prompt use for proxy credentials.
-                                var credentials = await HttpHandlerResourceV3
-                                    .PromptForProxyCredentials(request.RequestUri, Proxy, cancellationToken);
-
-                                if (credentials == null)
-                                {
-                                    throw;
-                                }
-
-                                // use the user provided credential to send the request again.
-                                Proxy.Credentials = credentials;
-
-                                // Mark that the credentials have been updated
-                                _lastAuthId = Guid.NewGuid();
-                            }
-                            finally
-                            {
-                                _credentialPromptLock.Release();
+                                throw;
                             }
                         }
                         else
@@ -175,6 +152,48 @@ namespace NuGet.Protocol
 
                 var response = webException.Response as HttpWebResponse;
                 return response?.StatusCode == HttpStatusCode.ProxyAuthenticationRequired;
+            }
+
+            private async Task<bool> AcquireCredentialsAsync(Uri requestUri, Guid beforeAuthId, CancellationToken cancellationToken)
+            {
+                try
+                {
+                    await _credentialPromptLock.WaitAsync();
+
+                    // Check if the credentials have already changed
+                    if (beforeAuthId != _lastAuthId)
+                    {
+                        return true;
+                    }
+
+                    // Limit the number of retries
+                    _authRetries++;
+                    if (_authRetries >= MaxAuthRetries)
+                    {
+                        return false;
+                    }
+
+                    // prompt use for proxy credentials.
+                    var credentials = await HttpHandlerResourceV3
+                        .PromptForProxyCredentials(requestUri, Proxy, cancellationToken);
+
+                    if (credentials == null)
+                    {
+                        return false;
+                    }
+
+                    // use the user provided credential to send the request again.
+                    Proxy.Credentials = credentials;
+
+                    // Mark that the credentials have been updated
+                    _lastAuthId = Guid.NewGuid();
+
+                    return true;
+                }
+                finally
+                {
+                    _credentialPromptLock.Release();
+                }
             }
         }
 
