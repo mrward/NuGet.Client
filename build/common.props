@@ -33,6 +33,7 @@
 		-->
 		<SemanticVersion>3.4.3</SemanticVersion>
 		<PreReleaseVersion>0</PreReleaseVersion>
+		<ReleaseLabel>MonoDevelop</ReleaseLabel>
 	</PropertyGroup>
 
 	<!--Setting the Pre-release/Build meta-data from CI if Version is set-->
