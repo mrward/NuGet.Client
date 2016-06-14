@@ -55,16 +55,16 @@ namespace NuGet.Packaging
             }
 
             var attr = File.GetAttributes(fileFullPath);
-            if (!attr.HasFlag(FileAttributes.Directory) && entry.LastWriteTime.DateTime != DateTime.MinValue)
+            try
             {
-                try
+                if (!attr.HasFlag(FileAttributes.Directory) && entry.LastWriteTime.DateTime != DateTime.MinValue)
                 {
                     File.SetLastWriteTimeUtc(fileFullPath, entry.LastWriteTime.UtcDateTime);
                 }
-                catch (ArgumentOutOfRangeException)
-                {
-                    // Ignore invalid file times in zip file
-                }
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                // Ignore invalid file times in zip file
             }
 
             return fileFullPath;

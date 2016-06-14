@@ -171,16 +171,16 @@ namespace NuGet.Packaging
                     if (copiedFile != null)
                     {
                         var attr = File.GetAttributes(copiedFile);
-                        if (!attr.HasFlag(FileAttributes.Directory) && entry.LastWriteTime.DateTime != DateTime.MinValue)
+                        try
                         {
-                            try
+                            if (!attr.HasFlag(FileAttributes.Directory) && entry.LastWriteTime.DateTime != DateTime.MinValue)
                             {
                                 File.SetLastWriteTimeUtc(copiedFile, entry.LastWriteTime.UtcDateTime);
                             }
-                            catch (ArgumentOutOfRangeException)
-                            {
-                                // Ignore invalid file times in zip file
-                            }
+                        }
+                        catch (ArgumentOutOfRangeException)
+                        {
+                            // Ignore invalid file times in zip file
                         }
 
                         filesCopied.Add(copiedFile);
