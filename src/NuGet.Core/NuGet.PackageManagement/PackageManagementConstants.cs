@@ -10,7 +10,7 @@ namespace NuGet.PackageManagement
         /// <summary>
         /// Default MaxDegreeOfParallelism to use for restores and other threaded operations.
         /// </summary>
-        public static readonly int DefaultMaxDegreeOfParallelism = 16;
+        public static readonly int DefaultMaxDegreeOfParallelism = 1;
 
         /// <summary>
         /// Default amount of time a source request can take before timing out. This includes both UNC shares
