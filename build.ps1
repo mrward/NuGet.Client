@@ -1,9 +1,9 @@
 [CmdletBinding(DefaultParameterSetName='RegularBuild')]
 param (
     [ValidateSet("debug", "release")]
-    [string]$Configuration = 'debug',
-    [ValidateSet("release","rtm", "rc", "rc1", "beta", "beta1", "beta2", "final", "xprivate", "zlocal")]
-    [string]$ReleaseLabel = 'zlocal',
+    [string]$Configuration = 'release',
+    [ValidateSet("release","rtm", "rc", "rc1", "beta", "beta1", "beta2", "final", "xprivate", "zlocal", "monodevelop")]
+    [string]$ReleaseLabel = 'monodevelop',
     [int]$BuildNumber,
     [switch]$SkipRestore,
     [switch]$CleanCache,
