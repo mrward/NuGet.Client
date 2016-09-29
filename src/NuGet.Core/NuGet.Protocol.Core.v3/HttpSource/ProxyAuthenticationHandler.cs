@@ -122,9 +122,11 @@ namespace NuGet.Protocol
 
         private static bool IsMonoProxyAuthenticationRequiredError(WebException ex)
         {
-            return ex.Status == WebExceptionStatus.SecureChannelFailure &&
+            return (ex.Status == WebExceptionStatus.SecureChannelFailure ||
+                ex.Status == WebExceptionStatus.ProtocolError) &&
                 ex.Message != null &&
-                ex.Message.Contains("The remote server returned a 407 status code.");
+                (ex.Message.Contains("The remote server returned a 407 status code.") ||
+                ex.Message.Contains("Proxy Authentication Required"));
         }
 #else
         private static bool ProxyAuthenticationRequired(Exception ex)
